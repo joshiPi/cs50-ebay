@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% for listing in listings%}
+
+<div>
+    <section style='border:2px solid black'>
+        <a href="{% url 'listing' listing.id %}" style='text-decoration: none;'>
+            <h2>{{listing.title}}</h2>
+            <h4>Category: {{ listing.category }}</h4>
+            <p>{{listing.description}}</p>
+            <p>start-bid: {{listing.starting_bid}}$</p>
+            <p>current-bid</p>
+
+        </a>
+        {% if user.is_authenticated %}
+        <button>bid</button>
+        <button>
+            <a href="{% url 'add_watchlist' listing.id %}">
+                Add to watchlist
+            </a>
+        </button>
+        {% else %}
+        <button>Log-in to Bid</button>
+        {% endif %}
+    </section>
+
+</div>
+{% endfor %}
+
+{% endblock %}

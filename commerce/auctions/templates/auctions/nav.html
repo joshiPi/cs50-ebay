@@ -1,0 +1,63 @@
+<style>
+    .nav_list {
+        padding: 0;
+        display: flex;
+        flex-flow: row nowrap;
+        list-style-type: none;
+        justify-content: flex-end;
+        margin-top: -18px;
+
+    }
+
+    .nav_item {
+        margin-left: 15px;
+        font-size: large;
+
+    }
+
+    #name {
+        border: 1px solid aqua;
+        border-radius: 50%;
+        background-color: aqua;
+        color: black;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+<script>
+    let un = '{{ user.username }}';
+    un = un.slice(0, 1)
+</script>
+
+
+
+
+<nav class="navbar bg-dark navbar-dark">
+
+    <a class="navbar-brand" href="/">Sell-It</a>
+    <ul class='nav_list'>
+
+
+        {% if user.is_authenticated %}
+        <li class="nav_item"><a href="{% url 'create_listing' %}">Sell</a></li>
+        <li class='nav_item'>
+            <a href="{% url 'watchlist' user.id %}">Watchlist
+            </a>
+        </li>
+        <li class='nav_item'><a href="{% url 'logout' %}">Log Out</a></li>
+        <li class='nav_item' id="name">{{ user.id }}</li>
+        {% else %}
+        <li class="nav_item"><a href="{% url 'login' %}">
+                Login</a>
+        </li>
+        <li class="nav_item"><a href="{% url 'register' %}">
+                Register</a>
+        </li>
+        {% endif %}
+
+
+
+    </ul>
+</nav>

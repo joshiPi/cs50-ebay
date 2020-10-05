@@ -1,0 +1,38 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+<h2>Create your Listings</h2>
+<div>
+    <form action="{% url 'create_listing' %}" method="Post">
+        {% csrf_token %}
+        {{ form.as_ul }}
+        <input type="submit" value='Submit'>
+    </form>
+
+</div>
+
+
+{% for listing in listings %}
+<div>
+    <h1>My listings</h1>
+    <a href="{% url 'listing' listing.id %}">
+        <section style='border:2px solid black'>
+            <h2>{{listing.title}}</h2>
+            <h4>Category: {{ listing.category }}</h4>
+            <p>{{listing.description}}</p>
+            <p>start-bid: {{listing.starting_bid}}$</p>
+            <p>current-bid</p>
+    </a>
+    </section>
+
+    <button>
+        <a href="#">
+            Close-Bidding</a>
+    </button>
+
+</div>
+{% empty %}
+<h2>You have not created any Listings </h2>
+
+{% endfor %}
+
+{% endblock %}
