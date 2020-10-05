@@ -5,14 +5,16 @@
 </h2>
 {% for listing in listings %}
 <div>
-    <section style='border:2px solid black'>
-        <h2>{{listing.title}}</h2>
-        <h4>Category: {{ listing.category }}</h4>
-        <p>{{listing.description}}</p>
-        <p>start-bid: {{listing.starting_bid}}$</p>
-        <p>current-bid</p>
-        <button>bid</button>
-    </section>
+    <a href="{% url 'listing' listing.id %}">
+        <section style='border:2px solid black'>
+            <h2>{{listing.title}}</h2>
+            <h4>Category: {{ listing.category }}</h4>
+            <p>{{listing.description}}</p>
+            <p>start-bid: {{listing.starting_bid}}$</p>
+            <p>current-bid</p>
+            <button>bid</button>
+        </section>
+    </a>
 
 </div>
 {% endfor %}

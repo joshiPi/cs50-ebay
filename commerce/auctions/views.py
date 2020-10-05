@@ -14,6 +14,15 @@ def index(request):
     return render(request, "auctions/index.html", {'listings': listings})
 
 
+def search(request):
+    q = request.GET['q']
+    listings = Listings.objects.filter(category=q)
+    if listings:
+        return render(request, 'auctions/category_search.html', {'listings': listings, 'q': q})
+    else:
+        return HttpResponse('<html>no such category exists</html>')
+
+
 def listing(request, pk):
     if request.method == "POST":
         comm = request.POST.get('comment')

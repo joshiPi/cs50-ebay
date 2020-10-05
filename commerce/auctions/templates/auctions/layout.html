@@ -15,6 +15,13 @@
     {% include "auctions/nav.html" %}
 
     <hr>
+    <div>
+        <form action="{% url 'search' %}">
+            <label for="q">Search by category :</label>
+            <input class='search' type="text" id='q' name='q'>
+        </form>
+    </div>
+    <hr>
     {% block body %}
     {% endblock %}
     <footer>
