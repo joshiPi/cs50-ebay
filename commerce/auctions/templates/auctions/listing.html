@@ -5,11 +5,31 @@
 	<section style='border:2px solid black'>
 		<h2>{{listing.title}}</h2>
 		<h4>Category: {{ listing.category }}</h4>
-        	<p>{{listing.description}}</p>
-        	<p>start-bid: {{listing.starting_bid}}$</p>
-        	<p>current-bid</p>
-        	<button>bid</button>
-    	</section>
+		<p>{{listing.description}}</p>
+		<p>start-bid: {{listing.starting_bid}}$</p>
+		<p>current-bid</p>
+		<button>bid</button>
+	</section>
 
 </div>
+<hr>
+<h3>
+	Comments
+</h3>
+{% for comment in comments %}
+<div>
+	<section>
+		<p><strong>{{ comment.commented_by }}</strong> : {{ comment.comment}}</p>
+	</section>
+</div>
+{% empty %}
+<p>No one commented on this yet</p>
+{% endfor %}
+<p><strong>{{ user.username }} :</strong></p>
+<form action="{% url 'listing' listing.id %}" method="Post">
+	{% csrf_token %}
+	<input type="text" name='comment' placeholder="add your comment  here">
+	<br>
+	<input type="submit" value='Submit'>
+</form>
 {% endblock %}

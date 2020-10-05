@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .forms import CreateListingForm
-from .models import User, Listings
+from .models import User, Listings, Comments
 
 
 def index(request):
@@ -15,9 +15,18 @@ def index(request):
 
 
 def listing(request, pk):
+    if request.method == "POST":
+        comm = request.POST.get('comment')
+        Listing = Listings.objects.get(id=pk)
+        user = User.objects.get(id=request.user.id)
+        new_comment = Comments(
+            commented_by=user, commented_on=Listing, comment=comm)
+        new_comment.save()
+        return HttpResponseRedirect(reverse('listing', args=(pk,)))
     lg = Listings.objects.filter(id=pk)
     listing = lg[0]
-    return render(request, 'auctions/listing.html', {'listing': listing})
+    comments = Comments.objects.filter(commented_on=pk)
+    return render(request, 'auctions/listing.html', {'listing': listing, 'comments': comments})
 
 
 def watchlist(request, pk):
