@@ -31,3 +31,13 @@ class Comments(models.Model):
 
     def __str__(self):
         return f"{self.commented_by} commented on {self.commented_on.title}: {self.comment}"
+
+
+class Bids(models.Model):
+    bid_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='bids')
+    bid_on = models.ForeignKey(Listings, on_delete=models.CASCADE)
+    bid = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.bid_by} placed {self.bid} on {self.bid_on.title}"
