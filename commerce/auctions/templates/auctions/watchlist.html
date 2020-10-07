@@ -13,7 +13,10 @@
             <p>current-bid</p>
     </a>
     </section>
-    <button>bid</button>
+    <button>
+        <a href="{% url 'bidding' listing.id %}">
+            bid</a>
+    </button>
 
     <button>
         <a href="{% url 'remove_watchlist' listing.id %}">

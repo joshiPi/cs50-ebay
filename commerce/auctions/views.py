@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .forms import CreateListingForm
-from .models import User, Listings, Comments
+from .models import User, Listings, Comments, Bids
 
 
 def index(request):
@@ -33,9 +33,50 @@ def listing(request, pk):
         new_comment.save()
         return HttpResponseRedirect(reverse('listing', args=(pk,)))
     lg = Listings.objects.filter(id=pk)
+    try:
+        bids = Bids.objects.get(bid_on=pk)
+        value = bids.bid
+    except:
+        value = "No Current bids "
+
     listing = lg[0]
     comments = Comments.objects.filter(commented_on=pk)
-    return render(request, 'auctions/listing.html', {'listing': listing, 'comments': comments})
+    return render(request, 'auctions/listing.html', {'listing': listing, 'comments': comments, 'value': value})
+
+
+def bidding(request, pk):
+    listing = Listings.objects.get(id=pk)
+    if request.method == "POST":
+        user_bid = request.POST['user_bid']
+        user_bid = float(user_bid)
+        try:
+            bids = Bids.objects.get(bid_on=listing)
+            current_bid = float(bids.bid)
+            if user_bid > current_bid:
+                bids.bid_by = request.user
+                bids.bid = user_bid
+                bids.save()
+                message = "Your bid is successfully placed"
+
+            else:
+                message = "Your Current bid is lower than existing bid"
+            return render(request, 'auctions/bidding.html', {"listing": listing, 'message': message})
+
+        except:
+            if user_bid > listing.starting_bid:
+                user = request.user
+                bid_instance = Bids(bid_by=user, bid_on=listing, bid=user_bid)
+                bid_instance.save()
+                message = "Your bid is successfully placed(e)"
+            else:
+                message = "Your Current bid is lower than existing bid(e)"
+            return render(request, 'auctions/bidding.html', {"listing": listing, 'message': message})
+
+    return render(request, 'auctions/bidding.html', {"listing": listing})
+
+    pass
+#     try:
+#         bid = Bids.objects.get(bid_on=pk)
 
 
 def watchlist(request, pk):

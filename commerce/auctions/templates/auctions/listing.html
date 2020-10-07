@@ -7,8 +7,11 @@
 		<h4>Category: {{ listing.category }}</h4>
 		<p>{{listing.description}}</p>
 		<p>start-bid: {{listing.starting_bid}}$</p>
-		<p>current-bid</p>
-		<button>bid</button>
+		<p>current-bid: {{value}}</p>
+		<button>
+			<a href="{% url 'bidding' listing.id %}">
+				bid</a>
+		</button>
 	</section>
 
 </div>
