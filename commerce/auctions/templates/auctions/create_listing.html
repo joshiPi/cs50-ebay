@@ -10,25 +10,27 @@
 
 </div>
 
-
+<h1>My listings</h1>
 {% for listing in listings %}
 <div>
-    <h1>My listings</h1>
+
     <a href="{% url 'listing' listing.id %}">
         <section style='border:2px solid black'>
             <h2>{{listing.title}}</h2>
             <h4>Category: {{ listing.category }}</h4>
             <p>{{listing.description}}</p>
             <p>start-bid: {{listing.starting_bid}}$</p>
-            <p>current-bid</p>
+            <p>current-bid : {{listing.starting_bid}}</p>
     </a>
     </section>
-
+    {% if listing.closed %}
+    <p>You closed this listing</p>
+    {% else %}
     <button>
-        <a href="#">
+        <a href="{% url 'close_listing' listing.id %}">
             Close-Bidding</a>
     </button>
-
+    {% endif %}
 </div>
 {% empty %}
 <h2>You have not created any Listings </h2>

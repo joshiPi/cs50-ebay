@@ -6,12 +6,17 @@
 		<h2>{{listing.title}}</h2>
 		<h4>Category: {{ listing.category }}</h4>
 		<p>{{listing.description}}</p>
+		{% if listing.closed %}
+		<p>This Listing is closed</p>
+		<p>{{listing.winner}}</p>
+		{% else %}
 		<p>start-bid: {{listing.starting_bid}}$</p>
-		<p>current-bid: {{value}}</p>
+		<p>current-bid: {{listing.current_bid}}</p>
 		<button>
 			<a href="{% url 'bidding' listing.id %}">
 				bid</a>
 		</button>
+		{% endif %}
 	</section>
 
 </div>

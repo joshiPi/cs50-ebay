@@ -46,6 +46,10 @@
             <a href="{% url 'watchlist' user.id %}">Watchlist
             </a>
         </li>
+        <li class='nav_item'>
+            <a href="{% url 'active' %}">Active-Listings
+            </a>
+        </li>
         <li class='nav_item'><a href="{% url 'logout' %}">Log Out</a></li>
         <li class='nav_item' id="name">{{ user.id }}</li>
         {% else %}

@@ -21,6 +21,20 @@ class Listings(models.Model):
     def __str__(self):
         return f'{self.title} by {self.owner} bidding starts at {self.starting_bid}$ : {self.description}'
 
+    def current_bid(self):
+        try:
+            a = self.bids.all()[0]
+            return f"{a.bid}$"
+        except:
+            return f"No current Bids"
+
+    def winner(self):
+        try:
+            a = self.bids.all()[0]
+            return f"{a.bid_by} won the auction by bidding {a.bid}$"
+        except:
+            return f"No one won this listing"
+
 
 class Comments(models.Model):
     commented_by = models.ForeignKey(
@@ -35,8 +49,9 @@ class Comments(models.Model):
 
 class Bids(models.Model):
     bid_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='bids')
-    bid_on = models.ForeignKey(Listings, on_delete=models.CASCADE)
+        User, on_delete=models.CASCADE, related_name='bids_made_by_user')
+    bid_on = models.ForeignKey(
+        Listings, on_delete=models.CASCADE, related_name='bids')
     bid = models.DecimalField(max_digits=8, decimal_places=2)
 
     def __str__(self):

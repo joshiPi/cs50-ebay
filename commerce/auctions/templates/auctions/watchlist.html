@@ -10,18 +10,26 @@
             <h4>Category: {{ listing.category }}</h4>
             <p>{{listing.description}}</p>
             <p>start-bid: {{listing.starting_bid}}$</p>
-            <p>current-bid</p>
+            <p>current-bid: {{listing.current_bid}}</p>
     </a>
     </section>
+
+    {% if listing.closed %}
+    <div>
+        <p>This listing is closed</p>
+    </div>
+    {% else %}
     <button>
         <a href="{% url 'bidding' listing.id %}">
             bid</a>
     </button>
-
     <button>
         <a href="{% url 'remove_watchlist' listing.id %}">
             Remove from watchlist</a>
     </button>
+
+    {% endif %}
+
 
 </div>
 {% empty %}

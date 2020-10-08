@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("active", views.active, name="active"),
     path("search", views.search, name="search"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
@@ -15,6 +16,8 @@ urlpatterns = [
          views.remove_watchlist, name='remove_watchlist'),
     path('create_listing', views.create_listing, name='create_listing'),
     path("bid/<int:pk>", views.bidding, name='bidding'),
+    path("close/<int:pk>", views.close_listing, name='close_listing'),
+
 
 
 

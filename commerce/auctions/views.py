@@ -9,8 +9,14 @@ from .models import User, Listings, Comments, Bids
 
 
 def index(request):
-    listings = Listings.objects.filter(closed=False)
 
+    listings = Listings.objects.all()
+    return render(request, "auctions/index.html", {'listings': listings})
+
+
+def active(request):
+
+    listings = Listings.objects.filter(closed=False)
     return render(request, "auctions/index.html", {'listings': listings})
 
 
@@ -74,7 +80,6 @@ def bidding(request, pk):
 
     return render(request, 'auctions/bidding.html', {"listing": listing})
 
-    pass
 #     try:
 #         bid = Bids.objects.get(bid_on=pk)
 
@@ -118,6 +123,13 @@ def create_listing(request):
         form = CreateListingForm()
         listings = Listings.objects.filter(owner=request.user.id)
     return render(request, 'auctions/create_listing.html', {'form': form, 'listings': listings})
+
+
+def close_listing(request, pk):
+    lis = Listings.objects.get(id=pk)
+    lis.closed = True
+    lis.save()
+    return HttpResponseRedirect(reverse('index'))
 
 
 def login_view(request):
