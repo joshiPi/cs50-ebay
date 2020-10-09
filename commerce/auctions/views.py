@@ -87,12 +87,14 @@ def bidding(request, pk):
 #         bid = Bids.objects.get(bid_on=pk)
 
 
+@login_required
 def watchlist(request, pk):
 
     wl = Listings.objects.filter(watchlist_user=pk)
     return render(request, 'auctions/watchlist.html', {'watchlist': wl})
 
 
+@login_required
 def add_watchlist(request, pk):
     item = Listings.objects.get(id=pk)
     user = User.objects.get(id=request.user.id)
@@ -100,6 +102,7 @@ def add_watchlist(request, pk):
     return HttpResponseRedirect(reverse('watchlist', args=(request.user.id,)))
 
 
+@login_required
 def remove_watchlist(request, pk):
     item = Listings.objects.get(id=pk)
     user = User.objects.get(id=request.user.id)
@@ -107,6 +110,7 @@ def remove_watchlist(request, pk):
     return HttpResponseRedirect(reverse('watchlist', args=(request.user.id,)))
 
 
+@login_required
 def create_listing(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST)
@@ -128,6 +132,7 @@ def create_listing(request):
     return render(request, 'auctions/create_listing.html', {'form': form, 'listings': listings})
 
 
+@login_required
 def close_listing(request, pk):
     lis = Listings.objects.get(id=pk)
     lis.closed = True

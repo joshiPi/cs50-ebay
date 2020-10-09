@@ -56,6 +56,7 @@
 {% empty %}
 <p>No one commented on this yet</p>
 {% endfor %}
+{% if user.is_authenticated %}
 <p><strong>{{ user.username }} :</strong></p>
 <form action="{% url 'listing' listing.id %}" method="Post">
 	{% csrf_token %}
@@ -63,4 +64,11 @@
 	<br>
 	<input type="submit" value='Submit'>
 </form>
+{% else %}
+<button type="button" class="btn">
+	<a href="{% url 'login' %}">
+		Log-in to comment
+	</a>
+</button>
+{% endif %}
 {% endblock %}
