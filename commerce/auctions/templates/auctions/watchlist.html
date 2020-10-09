@@ -1,35 +1,63 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-{% for listing in watchlist %}
-
+{% for listing in watchlist reversed %}
 <div>
-    <a href="{% url 'listing' listing.id %}">
-        <section style='border:2px solid black'>
-            <h2>{{listing.title}}</h2>
-            <h4>Category: {{ listing.category }}</h4>
-            <p>{{listing.description}}</p>
-            <p>start-bid: {{listing.starting_bid}}$</p>
-            <p>current-bid: {{listing.current_bid}}</p>
-    </a>
-    </section>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="fakeimg"><img src="{{listing.image_url}}" alt="Image"></div>
+        </div>
+        <div class="col-sm-6">
+            <div>
+                <a href="{% url 'listing' listing.id %}" style="text-decoration: none;">
 
-    {% if listing.closed %}
-    <div>
-        <p>This listing is closed</p>
+                    <h1>{{listing.title}}</h1>
+                </a>
+                <h4>Category: {{ listing.category }}</h4>
+                <p style="margin-top:3rem;">{{listing.description}}</p>
+                {% if listing.closed %}
+                <p><strong>listing is closed</strong> </p>
+
+                <p>{{listing.winner}}</p>
+
+                <a href="{% url 'remove_watchlist' listing.id %}">
+                    <button type="button" class="btn" style='color:blue'>
+
+                        Remove from Watchlist
+                    </button>
+                </a>
+
+                {% else %}
+                <p style="margin-top:3rem;" id='bid'>start-bid: {{listing.starting_bid}}$</p>
+                <p id='bid'>current-bid: {{listing.current_bid}}</p>
+            </div>
+            <div style='margin-top:6rem'>
+                {% if user.is_authenticated %}
+                <a href="{% url 'bidding' listing.id %}">
+                    <button type="button" class="btn" style='color:blue'>
+
+                        bid
+                    </button>
+                </a>
+                <a href="{% url 'remove_watchlist' user.id %}">
+                    <button type="button" class="btn" style='color:blue'>
+
+                        Remove from Watchlist
+                    </button>
+                </a>
+
+                {% else %}
+                <button type="button" class="btn">
+                    <a href="#">
+                        Log-in to Bid
+                    </a>
+                </button>}
+                {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
     </div>
-    {% else %}
-    <button>
-        <a href="{% url 'bidding' listing.id %}">
-            bid</a>
-    </button>
-    <button>
-        <a href="{% url 'remove_watchlist' listing.id %}">
-            Remove from watchlist</a>
-    </button>
-
-    {% endif %}
-
 
 </div>
 {% empty %}

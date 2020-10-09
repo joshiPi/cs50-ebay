@@ -13,28 +13,55 @@
 <h1>My listings</h1>
 {% for listing in listings %}
 <div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="fakeimg"><img src="{{listing.image_url}}" alt="Image"></div>
+        </div>
+        <div class="col-sm-6">
+            <div>
+                <a href="{% url 'listing' listing.id %}" style="text-decoration: none;">
 
-    <a href="{% url 'listing' listing.id %}">
-        <section style='border:2px solid black'>
-            <h2>{{listing.title}}</h2>
-            <h4>Category: {{ listing.category }}</h4>
-            <p>{{listing.description}}</p>
-            <p>start-bid: {{listing.starting_bid}}$</p>
-            <p>current-bid : {{listing.starting_bid}}</p>
-    </a>
-    </section>
-    {% if listing.closed %}
-    <p>You closed this listing</p>
-    {% else %}
-    <button>
-        <a href="{% url 'close_listing' listing.id %}">
-            Close-Bidding</a>
-    </button>
-    {% endif %}
+                    <h1>{{listing.title}}</h1>
+                </a>
+                <h4>Category: {{ listing.category }}</h4>
+                <p style="margin-top:3rem;">{{listing.description}}</p>
+                {% if listing.closed %}
+                <h2><strong>listing is closed</strong> </h2>
+
+                <p>{{listing.winner}}</p>
+                {% else %}
+                <p style="margin-top:3rem;" id='bid'>start-bid: {{listing.starting_bid}}$</p>
+                <p id='bid'>current-bid: {{listing.current_bid}}</p>
+            </div>
+            <div style='margin-top:6rem'>
+                {% if user.is_authenticated %}
+                <a href="{% url 'bidding' listing.id %}">
+                    <button type="button" class="btn" style='color:blue'>
+
+                        bid
+                    </button>
+                </a>
+                <a href="{% url 'add_watchlist' listing.id %}">
+                    <button type="button" class="btn" style='color:blue'>
+
+                        Add to Watchlist
+                    </button>
+                </a>
+
+                {% else %}
+                <button type="button" class="btn">
+                    <a href="{% url 'login' %}">
+                        Log-in to Bid
+                    </a>
+                </button>
+                {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
 </div>
-{% empty %}
-<h2>You have not created any Listings </h2>
-
 {% endfor %}
 
 {% endblock %}

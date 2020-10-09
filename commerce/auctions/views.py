@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.signals import user_logged_in
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -26,7 +27,8 @@ def search(request):
     if listings:
         return render(request, 'auctions/category_search.html', {'listings': listings, 'q': q})
     else:
-        return HttpResponse('<html>no such category exists</html>')
+        categories = list(set([e.category for e in Listings.objects.all()]))
+        return render(request, 'auctions/category_search.html', {'categories': categories, 'q': q})
 
 
 def listing(request, pk):
@@ -50,6 +52,7 @@ def listing(request, pk):
     return render(request, 'auctions/listing.html', {'listing': listing, 'comments': comments, 'value': value})
 
 
+@login_required
 def bidding(request, pk):
     listing = Listings.objects.get(id=pk)
     if request.method == "POST":

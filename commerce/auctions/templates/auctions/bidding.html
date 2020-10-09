@@ -2,23 +2,43 @@
 
 {% block body %}
 <div>
-    <section style='border:2px solid black'>
-        <h2>{{listing.title}}</h2>
-        <h4>Category: {{ listing.category }}</h4>
-        <p>{{listing.description}}</p>
-        <p>start-bid: {{listing.starting_bid}}$</p>
-        <p>current-bid: {{listing.current_bid}}</p>
-    </section>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="fakeimg"><img src="{{listing.image_url}}" alt="Image"></div>
+        </div>
+        <div class="col-sm-6">
+            <div>
+                <a href="{% url 'listing' listing.id %}" style="text-decoration: none;">
 
-</div>
-<div>
-    {% if message %}
-    {{message}}
+                    <h1>{{listing.title}}</h1>
+                </a>
+                <h4>Category: {{ listing.category }}</h4>
+                <p style="margin-top:3rem;">{{listing.description}}</p>
+                {% if listing.closed %}
+                <h2 style="margin:20px"><strong>listing is closed</strong> </h2>
+                <p>{{listing.winner}}</p>
+                {% else %}
+                <p style="margin-top:3rem;" id='bid'>start-bid: {{listing.starting_bid}}$</p>
+                <p id='bid'>current-bid: {{listing.current_bid}}</p>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div>
+        {% if message %}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{message}}</strong>
+        </div>
+
+        {% endif %}
+        <form action="{% url 'bidding' listing.id %}" , method="Post">
+            {% csrf_token %}
+            Place your Bid<input type="text" name='user_bid'>
+            <input type="submit" value='Submit'>
+        </form>
+    </div>
     {% endif %}
-    <form action="{% url 'bidding' listing.id %}" , method="Post">
-        {% csrf_token %}
-        Place your Bid<input type="text" name='user_bid'>
-        <input type="submit" value='Submit'>
-    </form>
-</div>
-{% endblock %}
+    {% endblock %}

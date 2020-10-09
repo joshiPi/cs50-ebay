@@ -1,24 +1,47 @@
 {% extends 'auctions/layout.html' %}
 
 {% block body %}
-<div>
-	<section style='border:2px solid black'>
-		<h2>{{listing.title}}</h2>
-		<h4>Category: {{ listing.category }}</h4>
-		<p>{{listing.description}}</p>
-		{% if listing.closed %}
-		<p>This Listing is closed</p>
-		<p>{{listing.winner}}</p>
-		{% else %}
-		<p>start-bid: {{listing.starting_bid}}$</p>
-		<p>current-bid: {{listing.current_bid}}</p>
-		<button>
-			<a href="{% url 'bidding' listing.id %}">
-				bid</a>
-		</button>
-		{% endif %}
-	</section>
 
+<div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="fakeimg"><img src="{{listing.image_url}}" alt="Image"></div>
+		</div>
+		<div class="col-sm-6">
+			<div>
+				<h1>{{listing.title}}</h2>
+					<h4>Category: {{ listing.category }}</h4>
+					<p style="margin-top:3rem;">{{listing.description}}</p>
+					{% if listing.closed %}
+					<p><strong>listing is closed</strong> </p>
+					<p>{{listing.winner}}</p>
+					{% else %}
+					<p style="margin-top:3rem;" id='bid'>start-bid: {{listing.starting_bid}}$</p>
+					<p id='bid'>current-bid: {{listing.current_bid}}</p>
+			</div>
+			<div style='margin-top:6rem'>
+				{% if user.is_authenticated %}
+				<button type="button" class="btn">
+					<a href="{% url 'bidding' listing.id %}">
+						bid</a>
+				</button>
+				<button type="button" class="btn">
+					<a href="{% url 'add_watchlist' listing.id %}">
+						Add to watchlist
+					</a>
+				</button>
+				{% else %}
+				<button type="button" class="btn">
+					<a href="{% url 'login'%}">
+						Log-in to Bid
+					</a>
+				</button>
+				{% endif %}
+				{% endif %}
+			</div>
+
+		</div>
+	</div>
 </div>
 <hr>
 <h3>
